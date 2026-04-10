@@ -319,7 +319,7 @@ Intención de venta: ${form.intencion_venta}.
     }}
   >
     {[
-      { value: "Departamento", icon: "🏢" },
+      { value: "Depto", icon: "🏢" },
       { value: "Casa", icon: "🏠" },
       { value: "PH", icon: "🏘️" },
     ].map((item) => {
@@ -378,32 +378,86 @@ Intención de venta: ${form.intencion_venta}.
             />
           </label>
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Ambientes</span>
-            <select
-              name="ambientes"
-              value={form.ambientes}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-              boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5 o más</option>
-            </select>
-          </label>
+          <div>
+  <span
+    style={{
+      fontWeight: "700",
+      display: "block",
+      marginBottom: 8,
+    }}
+  >
+    Ambientes
+  </span>
+
+  <div
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      border: "1px solid #d6dbe4",
+      borderRadius: 0,
+      overflow: "hidden",
+      background: "#fff",
+    }}
+  >
+    <button
+      type="button"
+      onClick={() =>
+        setForm((prev) => ({
+          ...prev,
+          ambientes: String(Math.max(1, Number(prev.ambientes || 1) - 1)),
+        }))
+      }
+      style={{
+        width: 48,
+        height: 40,
+        border: "none",
+        background: "#2f64e1",
+        color: "#fff",
+        fontSize: 24,
+        cursor: "pointer",
+      }}
+    >
+      −
+    </button>
+
+    <div
+      style={{
+        minWidth: 60,
+        height: 40,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 28,
+        fontWeight: 700,
+        color: "#19283F",
+        background: "#fff",
+      }}
+    >
+      {form.ambientes || "1"}
+    </div>
+
+    <button
+      type="button"
+      onClick={() =>
+        setForm((prev) => ({
+          ...prev,
+          ambientes: String(Number(prev.ambientes || 1) + 1),
+        }))
+      }
+      style={{
+        width: 48,
+        height: 40,
+        border: "none",
+        background: "#2f64e1",
+        color: "#fff",
+        fontSize: 24,
+        cursor: "pointer",
+      }}
+    >
+      +
+    </button>
+  </div>
+</div>
 
           <label>
             <span style={{ fontWeight: "700" }}>Baños</span>
@@ -429,29 +483,68 @@ Intención de venta: ${form.intencion_venta}.
             </select>
           </label>
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Cochera</span>
-            <select
-              name="cochera"
-              value={form.cochera}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>Sí</option>
-              <option>No</option>
-            </select>
-          </label>
+          <div>
+  <span
+    style={{
+      fontWeight: "700",
+      display: "block",
+      marginBottom: 8,
+    }}
+  >
+    Cochera
+  </span>
+
+  <div
+    style={{
+      display: "inline-flex",
+      border: "1px solid #d6dbe4",
+      borderRadius: 0,
+      overflow: "hidden",
+      background: "#fff",
+    }}
+  >
+    <button
+      type="button"
+      onClick={() =>
+        setForm((prev) => ({ ...prev, cochera: "No" }))
+      }
+      style={{
+        minWidth: 70,
+        height: 40,
+        border: "none",
+        background: form.cochera === "No" ? "#2f64e1" : "#fff",
+        color: form.cochera === "No" ? "#fff" : "#19283F",
+        fontSize: 16,
+        fontWeight: 700,
+        cursor: "pointer",
+        padding: "0 18px",
+      }}
+    >
+      No
+    </button>
+
+    <button
+      type="button"
+      onClick={() =>
+        setForm((prev) => ({ ...prev, cochera: "Sí" }))
+      }
+      style={{
+        minWidth: 70,
+        height: 40,
+        border: "none",
+        background: form.cochera === "Sí" ? "#2f64e1" : "#fff",
+        color: form.cochera === "Sí" ? "#fff" : "#19283F",
+        fontSize: 16,
+        fontWeight: 700,
+        cursor: "pointer",
+        padding: "0 18px",
+        borderLeft: "1px solid #d6dbe4",
+      }}
+    >
+      Sí
+    </button>
+  </div>
+</div>
 
           <label>
             <span style={{ fontWeight: "700" }}>Antigüedad</span>
