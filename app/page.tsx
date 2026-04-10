@@ -300,33 +300,62 @@ Intención de venta: ${form.intencion_venta}.
             </select>
           </label>
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Tipo de propiedad</span>
-            <select
-              name="tipo_propiedad"
-              value={form.tipo_propiedad}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>Departamento</option>
-              <option>Casa</option>
-              <option>PH</option>
-              <option>Local</option>
-              <option>Oficina</option>
-              <option>Lote</option>
-            </select>
-          </label>
+          <div>
+  <span
+    style={{
+      fontWeight: "700",
+      display: "block",
+      marginBottom: 8,
+    }}
+  >
+    Tipo de propiedad
+  </span>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: 12,
+    }}
+  >
+    {[
+      { value: "Departamento", icon: "🏢" },
+      { value: "Casa", icon: "🏠" },
+      { value: "PH", icon: "🏘️" },
+    ].map((item) => {
+      const selected = form.tipo_propiedad === item.value;
+
+      return (
+        <button
+          key={item.value}
+          type="button"
+          onClick={() =>
+            setForm((prev) => ({ ...prev, tipo_propiedad: item.value }))
+          }
+          style={{
+            border: selected ? "2px solid #2f64e1" : "1px solid #d6dbe4",
+            background: selected ? "#2f64e1" : "#ffffff",
+            color: selected ? "#ffffff" : "#19283F",
+            borderRadius: 0,
+            padding: "20px 10px",
+            minHeight: 110,
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            boxSizing: "border-box",
+            transition: "all 0.2s ease",
+          }}
+        >
+          <span style={{ fontSize: 30, lineHeight: 1 }}>{item.icon}</span>
+          <span style={{ fontWeight: 700, fontSize: 16 }}>{item.value}</span>
+        </button>
+      );
+    })}
+  </div>
+</div>
 
           <label>
            <span style={{ fontWeight: "700" }}>M2 cubiertos</span>
