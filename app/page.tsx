@@ -22,23 +22,30 @@ function esWhatsappValido(valor: string) {
 export default function Home() {
   const [barrios, setBarrios] = useState<string[]>([]);
   const [paso, setPaso] = useState(1);
-
-  const [form, setForm] = useState({
-    nombre: "",
-    codigo_area: "",
-    numero: "",
-    intencion_venta: "",
-    barrio: "",
-    tipo_propiedad: "",
-    m2_cubiertos: "",
-    ambientes: "",
-    banos: "",
-    cochera: "",
-    antiguedad: "",
-    estado: "",
-    amenities: "",
-    categoria: "",
-  });
+type FormData = {
+  nombre: string;
+  celular: string;
+  intencion_venta: string;
+  barrio: string;
+  tipo_propiedad: string;
+  m2_cubiertos: string;
+  ambientes: string;
+  cochera: string;
+  estado: string;
+  amenities: string[];
+};
+  const [form, setForm] = useState<FormData>({
+  nombre: "",
+  celular: "",
+  intencion_venta: "",
+  barrio: "",
+  tipo_propiedad: "",
+  m2_cubiertos: "",
+  ambientes: "1",
+  cochera: "",
+  estado: "",
+  amenities: [],
+});
 
   const [resultado, setResultado] = useState<Resultado | null>(null);
   const [error, setError] = useState("");
@@ -111,13 +118,13 @@ setPaso(2);
   async function capturarLeadYMostrarResultado() {
     if (!resultado) return;
 
-    if (!form.nombre.trim() || !form.codigo_area.trim() || !form.numero.trim()) {
+   if (!form.nombre.trim() || !form.celular.trim()) {
   setError("Completá nombre y WhatsApp para continuar.");
   return;
 }
 
-    if (!form.codigo_area || !form.numero) {
-  setError("Ingresá un número de WhatsApp válido");
+if (form.celular.replace(/\D/g, "").length !== 10) {
+  setError("Ingresá un WhatsApp válido, por ejemplo 1122334455.");
   return;
 }
 
@@ -129,13 +136,16 @@ setPaso(2);
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...form,
-        celular: `549${form.codigo_area}${form.numero}`,
-        m2_cubiertos: Number(form.m2_cubiertos),
-        valor_final: resultado.valor_final,
-        rango_min: resultado.rango_min,
-        rango_max: resultado.rango_max,
-      }),
+  ...form,
+  celular: `549${form.celular.replace(/\D/g, "")}`,
+  amenities: Array.isArray(form.amenities)
+    ? form.amenities.join(", ")
+    : form.amenities,
+  m2_cubiertos: Number(form.m2_cubiertos),
+  valor_final: resultado.valor_final,
+  rango_min: resultado.rango_min,
+  rango_max: resultado.rango_max,
+}),
     });
 
     const data = await res.json();
@@ -280,7 +290,7 @@ Intención de venta: ${form.intencion_venta}.
                 width: "100%",
                 padding: 12,
                 marginTop: 6,
-                borderRadius: 10,
+                borderRadius: 12,
                 border: "1px solid #d6dbe4",
                 fontSize: 15,
                 background: "#fff",
@@ -319,8 +329,8 @@ Intención de venta: ${form.intencion_venta}.
     }}
   >
     {[
-      { value: "Depto", icon: "🏢" },
       { value: "Casa", icon: "🏠" },
+      { value: "Depto", icon: "🏢" },
       { value: "PH", icon: "🏘️" },
     ].map((item) => {
       const selected = form.tipo_propiedad === item.value;
@@ -336,7 +346,7 @@ Intención de venta: ${form.intencion_venta}.
             border: selected ? "2px solid #2f64e1" : "1px solid #d6dbe4",
             background: selected ? "#2f64e1" : "#ffffff",
             color: selected ? "#ffffff" : "#19283F",
-            borderRadius: 0,
+            borderRadius: 12,
             padding: "20px 10px",
             minHeight: 110,
             cursor: "pointer",
@@ -369,7 +379,7 @@ Intención de venta: ${form.intencion_venta}.
                 width: "100%",
                 padding: 12,
                 marginTop: 6,
-                borderRadius: 10,
+                borderRadius: 12,
                 border: "1px solid #d6dbe4",
                 fontSize: 15,
                 background: "#fff",
@@ -394,7 +404,7 @@ Intención de venta: ${form.intencion_venta}.
       display: "inline-flex",
       alignItems: "center",
       border: "1px solid #d6dbe4",
-      borderRadius: 0,
+      borderRadius: 20,
       overflow: "hidden",
       background: "#fff",
     }}
@@ -408,7 +418,7 @@ Intención de venta: ${form.intencion_venta}.
         }))
       }
       style={{
-        width: 48,
+        width: 40,
         height: 40,
         border: "none",
         background: "#2f64e1",
@@ -427,7 +437,7 @@ Intención de venta: ${form.intencion_venta}.
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: 28,
+        fontSize: 25,
         fontWeight: 700,
         color: "#19283F",
         background: "#fff",
@@ -445,7 +455,7 @@ Intención de venta: ${form.intencion_venta}.
         }))
       }
       style={{
-        width: 48,
+        width: 40,
         height: 40,
         border: "none",
         background: "#2f64e1",
@@ -458,30 +468,6 @@ Intención de venta: ${form.intencion_venta}.
     </button>
   </div>
 </div>
-
-          <label>
-            <span style={{ fontWeight: "700" }}>Baños</span>
-            <select
-              name="banos"
-              value={form.banos}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            ><option value="">Seleccionar</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3 o más</option>
-            </select>
-          </label>
 
           <div>
   <span
@@ -498,7 +484,7 @@ Intención de venta: ${form.intencion_venta}.
     style={{
       display: "inline-flex",
       border: "1px solid #d6dbe4",
-      borderRadius: 0,
+      borderRadius: 20,
       overflow: "hidden",
       background: "#fff",
     }}
@@ -545,112 +531,113 @@ Intención de venta: ${form.intencion_venta}.
     </button>
   </div>
 </div>
+<span
+    style={{
+      fontWeight: "700",
+      display: "block",
+      marginBottom: 0,
+    }}
+  >
+    Amenities
+  </span>
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Antigüedad</span>
-            <select
-              name="antiguedad"
-              value={form.antiguedad}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>0-10 años</option>
-              <option>11-20 años</option>
-              <option>21-30 años</option>
-              <option>31-50 años</option>
-              <option>50+ años</option>
-            </select>
-          </label>
+  <div
+    style={{
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 10,
+      marginTop: 6,
+    }}
+  >
+    {["SUM", "Parrilla", "Piscina", "Gimnasio", "Seguridad"].map((item) => {
+      const selected = form.amenities.includes(item);
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Estado</span>
-            <select
-              name="estado"
-              value={form.estado}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>A refaccionar</option>
-              <option>Bueno</option>
-              <option>Muy bueno</option>
-              <option>Excelente</option>
-            </select>
-          </label>
+      return (
+        <button
+          key={item}
+          type="button"
+          onClick={() =>
+            setForm((prev) => ({
+              ...prev,
+              amenities: selected
+                ? prev.amenities.filter((a) => a !== item)
+                : [...prev.amenities, item],
+            }))
+          }
+          style={{
+            padding: "8px 14px",
+            borderRadius: 20,
+            border: selected ? "1px solid #2f64e1" : "1px solid #d6dbe4",
+            background: selected ? "#2f64e1" : "#ffffff",
+            color: selected ? "#ffffff" : "#19283F",
+            fontSize: 15,
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+        >
+          {item}
+        </button>
+      );
+    })}
+  </div>
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Amenities</span>
-            <select
-              name="amenities"
-              value={form.amenities}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>Ninguno</option>
-              <option>Básicos (sum, parrilla)</option>
-              <option>Completos (piscina, seguridad, gym)</option>
-            </select>
-          </label>
+          <div>
+  <span
+    style={{
+      fontWeight: "700",
+      display: "block",
+      marginBottom: 8,
+    }}
+  >
+    Estado
+  </span>
 
-          <label>
-            <span style={{ fontWeight: "700" }}>Categoría</span>
-            <select
-              name="categoria"
-              value={form.categoria}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 10,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">Seleccionar</option>
-              <option>Estándar (a reciclar o con mejoras)</option>
-              <option>Buena (buen estado, lista para habitar)</option> 
-              <option>Destacada (reciclada o con calidad superior)</option>
-              <option>Premium (alta gama y terminaciones de lujo)</option>
-            </select>
-          </label>
+  <div
+    style={{
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 10,
+      marginTop: 6,
+    }}
+  >
+    {["A refaccionar", "Bueno", "Excelente / Reciclado"].map((item) => {
+      const selected = form.estado === item;
 
-          <button
+      return (
+        <button
+          key={item}
+          type="button"
+          onClick={() =>
+            setForm((prev) => ({
+              ...prev,
+              estado: item,
+            }))
+          }
+          style={{
+            padding: "8px 14px",
+            borderRadius: 20,
+            border: selected ? "1px solid #2f64e1" : "1px solid #d6dbe4",
+            background: selected ? "#2f64e1" : "#ffffff",
+            color: selected ? "#ffffff" : "#19283F",
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+        >
+          {item}
+        </button>
+      );
+    })}
+  </div>
+</div>
+
+         <div>
+  
+</div>
+
+           <button
   type="submit"
   style={{
     marginTop: 18,
@@ -701,66 +688,25 @@ Intención de venta: ${form.intencion_venta}.
 
             <label>
   <span style={{ fontWeight: "700" }}>WhatsApp</span>
-
-  <div
+  <input
+    name="celular"
+    value={form.celular}
+    onChange={handleChange}
+    placeholder="11XXXXXXXX"
+    inputMode="numeric"
+    maxLength={10}
     style={{
-      display: "flex",
-      flexWrap: "wrap",
-      alignItems: "center",
-      gap: 10,
+      display: "block",
+      width: "100%",
+      padding: 12,
       marginTop: 6,
+      borderRadius: 10,
+      border: "1px solid #d6dbe4",
+      fontSize: 15,
+      background: "#fff",
+      boxSizing: "border-box",
     }}
-  >
-    <span
-      style={{
-        fontWeight: 600,
-        color: "#19283F",
-        minWidth: 50,
-      }}
-    >
-      +549
-    </span>
-
-    <input
-      name="codigo_area"
-      value={form.codigo_area || ""}
-      onChange={handleChange}
-      placeholder="Ej: 11"
-      inputMode="numeric"
-      maxLength={4}
-      style={{
-        width: "100%",
-        maxWidth: 110,
-        padding: 12,
-        borderRadius: 10,
-        border: "1px solid #d6dbe4",
-        fontSize: 15,
-        background: "#fff",
-        textAlign: "center",
-        boxSizing: "border-box",
-        flex: "1 1 90px",
-      }}
-    />
-
-    <input
-      name="numero"
-      value={form.numero || ""}
-      onChange={handleChange}
-      placeholder="Sin 15"
-      inputMode="numeric"
-      maxLength={8}
-      style={{
-        width: "100%",
-        padding: 12,
-        borderRadius: 10,
-        border: "1px solid #d6dbe4",
-        fontSize: 15,
-        background: "#fff",
-        boxSizing: "border-box",
-        flex: "2 1 180px",
-      }}
-    />
-  </div>
+  />
 </label>
 
             <label>
