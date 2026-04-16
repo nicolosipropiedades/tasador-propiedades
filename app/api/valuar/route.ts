@@ -32,6 +32,7 @@ export async function POST(req: Request) {
       barrio,
       tipo_propiedad,
       m2_cubiertos,
+      m2_descubiertos,
       estado,
       cochera,
       ambientes,
@@ -53,7 +54,13 @@ export async function POST(req: Request) {
     }
 
     const valor_m2 = Number(valorData.valor_m2);
-    const valor_base = valor_m2 * Number(m2_cubiertos);
+
+const cubiertos = Number(m2_cubiertos) || 0;
+const descubiertos = Number(m2_descubiertos) || 0;
+
+const m2_equivalentes = cubiertos + descubiertos * 0.25;
+
+const valor_base = valor_m2 * m2_equivalentes;
 
     const coef_estado = coefEstadoMap[estado] || 1;
     const coef_cochera = cochera === "Sí" ? 1.07 : 1.0;

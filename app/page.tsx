@@ -29,6 +29,7 @@ type FormData = {
   barrio: string;
   tipo_propiedad: string;
   m2_cubiertos: string;
+  m2_descubiertos: string;
   ambientes: string;
   cochera: string;
   estado: string;
@@ -41,6 +42,7 @@ type FormData = {
   barrio: "",
   tipo_propiedad: "",
   m2_cubiertos: "",
+  m2_descubiertos: "",
   ambientes: "1",
   cochera: "",
   estado: "",
@@ -142,6 +144,7 @@ if (form.celular.replace(/\D/g, "").length !== 10) {
     ? form.amenities.join(", ")
     : form.amenities,
   m2_cubiertos: Number(form.m2_cubiertos),
+  m2_descubiertos: Number(form.m2_descubiertos || 0),
   valor_final: resultado.valor_final,
   rango_min: resultado.rango_min,
   rango_max: resultado.rango_max,
@@ -276,10 +279,17 @@ Intención de venta: ${form.intencion_venta}.
       {paso === 1 && (
         <form
           onSubmit={calcularTasacion}
-          style={{ display: "grid", gap: 12, marginTop: 24 }}
+          style={{ display: "grid", gap: 18, marginTop: 24 }}
         >
           <label>
-           <span style={{ fontWeight: "700" }}>Barrio</span>
+           <span
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: 4,
+  }}
+>Barrio</span>
             <select
               name="barrio"
               value={form.barrio || ""}
@@ -290,7 +300,7 @@ Intención de venta: ${form.intencion_venta}.
                 width: "100%",
                 padding: 12,
                 marginTop: 6,
-                borderRadius: 12,
+                borderRadius: 20,
                 border: "1px solid #d6dbe4",
                 fontSize: 15,
                 background: "#fff",
@@ -309,15 +319,15 @@ Intención de venta: ${form.intencion_venta}.
 ))}
             </select>
           </label>
-
           <div>
   <span
-    style={{
-      fontWeight: "700",
-      display: "block",
-      marginBottom: 8,
-    }}
-  >
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: 4,
+  }}
+>
     Tipo de propiedad
   </span>
 
@@ -346,7 +356,7 @@ Intención de venta: ${form.intencion_venta}.
             border: selected ? "2px solid #2f64e1" : "1px solid #d6dbe4",
             background: selected ? "#2f64e1" : "#ffffff",
             color: selected ? "#ffffff" : "#19283F",
-            borderRadius: 12,
+            borderRadius: 20,
             padding: "20px 10px",
             minHeight: 110,
             cursor: "pointer",
@@ -365,37 +375,81 @@ Intención de venta: ${form.intencion_venta}.
       );
     })}
   </div>
+  <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+    gap: 12,
+    marginTop: 16,
+  }}
+>
+  <label>
+    <span
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: 4,
+  }}
+>M2 cubiertos</span>
+    <input
+      name="m2_cubiertos"
+      type="number"
+      value={form.m2_cubiertos}
+      onChange={handleChange}
+      placeholder="Ej: 85"
+      style={{
+        display: "block",
+        width: "100%",
+        padding: 12,
+        marginTop: 6,
+        borderRadius: 20,
+        border: "1px solid #d6dbe4",
+        fontSize: 15,
+        background: "#fff",
+        boxSizing: "border-box",
+      }}
+    />
+  </label>
+
+  <label>
+    <span
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: 4,
+  }}
+>M2 descubiertos</span>
+    <input
+      name="m2_descubiertos"
+      type="number"
+      value={form.m2_descubiertos}
+      onChange={handleChange}
+      placeholder="Ej: 40"
+      style={{
+        display: "block",
+        width: "100%",
+        padding: 12,
+        marginTop: 6,
+        borderRadius: 20,
+        border: "1px solid #d6dbe4",
+        fontSize: 15,
+        background: "#fff",
+        boxSizing: "border-box",
+      }}
+    />
+  </label>
 </div>
 
-          <label>
-           <span style={{ fontWeight: "700" }}>M2 cubiertos</span>
-            <input
-              name="m2_cubiertos"
-              type="number"
-              value={form.m2_cubiertos}
-              onChange={handleChange}
-              style={{
-                display: "block",
-                width: "100%",
-                padding: 12,
-                marginTop: 6,
-                borderRadius: 12,
-                border: "1px solid #d6dbe4",
-                fontSize: 15,
-                background: "#fff",
-                boxSizing: "border-box",
-              }}
-            />
-          </label>
-
-          <div>
   <span
-    style={{
-      fontWeight: "700",
-      display: "block",
-      marginBottom: 8,
-    }}
-  >
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 18,
+    marginBottom: 4,
+  }}
+>
     Ambientes
   </span>
 
@@ -471,12 +525,13 @@ Intención de venta: ${form.intencion_venta}.
 
           <div>
   <span
-    style={{
-      fontWeight: "700",
-      display: "block",
-      marginBottom: 8,
-    }}
-  >
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: 4,
+  }}
+>
     Cochera
   </span>
 
@@ -532,12 +587,13 @@ Intención de venta: ${form.intencion_venta}.
   </div>
 </div>
 <span
-    style={{
-      fontWeight: "700",
-      display: "block",
-      marginBottom: 0,
-    }}
-  >
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: -15,
+  }}
+>
     Amenities
   </span>
 
@@ -584,12 +640,13 @@ Intención de venta: ${form.intencion_venta}.
 
           <div>
   <span
-    style={{
-      fontWeight: "700",
-      display: "block",
-      marginBottom: 8,
-    }}
-  >
+  style={{
+    fontWeight: "700",
+    display: "block",
+    marginTop: 6,
+    marginBottom: 4,
+  }}
+>
     Estado
   </span>
 
