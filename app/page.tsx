@@ -789,13 +789,13 @@ Intención de venta: ${form.intencion_venta}.
       Tengo decidido vender ahora
     </option>
     <option value="Quiero publicar en 3 meses">
-      Quiero vender en 3 meses aprox.
+      Quiero vender en 3 meses
     </option>
     <option value="Quiero publicar en 6 meses">
-      Quiero vender en 6 meses aprox.
+      Quiero vender en 6 meses
     </option>
-    <option value="Lo estoy analizando">
-      Lo estoy analizando
+    <option value="Necesito asesoramiento antes de decidir">
+      Necesito asesoramiento antes de decidir
     </option>
   </select>
 </label>
