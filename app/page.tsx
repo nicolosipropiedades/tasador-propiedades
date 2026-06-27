@@ -993,8 +993,22 @@ onMouseLeave={(e) => {
       </div>
 
       <div style={{ opacity: 0.9 }}>
-        © 2026 Nicolosi Propiedades
-      </div>
+  © Tecnología desarrollada por{" "}
+  <a
+    href="https://www.mcesoluciones.com.ar"
+    target="_blank"
+    rel="noopener noreferrer"
+    title="MCE Soluciones"
+    style={{
+      color: "inherit",
+      textDecoration: "underline",
+      fontWeight: 600,
+      cursor: "pointer",
+    }}
+  >
+    MCE Soluciones
+  </a>
+</div>
     </div>
   </main>
 );
