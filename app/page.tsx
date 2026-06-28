@@ -958,40 +958,7 @@ onMouseLeave={(e) => {
         fontSize: 12,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 16,
-          marginBottom: 8,
-        }}
-      >
-        <a
-  href="https://instagram.com/nicolosipropiedades"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{ display: "flex", alignItems: "center" }}
->
-  <img
-    src="/iconoig.png"
-    alt="Instagram Nicolosi Propiedades"
-    style={{
-      height: 20,
-      width: 20,
-      objectFit: "contain",
-    }}
-  />
-</a>
-
-        <a
-          href="mailto:nicolosipropiedades@gmail.com"
-          style={{ color: "#ffffff", fontSize: 18, textDecoration: "none" }}
-          aria-label="Enviar email a Nicolosi Propiedades"
-        >
-          ✉️
-        </a>
-      </div>
-
+    
       <div style={{ opacity: 0.9 }}>
   © Tecnología desarrollada por{" "}
   <a
