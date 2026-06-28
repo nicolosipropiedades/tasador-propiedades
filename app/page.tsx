@@ -995,7 +995,7 @@ onMouseLeave={(e) => {
       <div style={{ opacity: 0.9 }}>
   © Tecnología desarrollada por{" "}
   <a
-    href="https://www.mcesoluciones.com.ar"
+    href="https://wa.me/5491130145807?text=Hola%2C%20quiero%20consultar%20por%20el%20tasador%20online%20para%20inmobiliarias."
     target="_blank"
     rel="noopener noreferrer"
     title="MCE Soluciones"
